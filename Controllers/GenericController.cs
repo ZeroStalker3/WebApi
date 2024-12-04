@@ -36,9 +36,15 @@ namespace WebApi.Controllers
         public async Task<IActionResult> Create([FromBody] TEntity entity)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
+
             await _dbSet.AddAsync(entity);
             await _context.SaveChangesAsync();
-            return CreatedAtAction(nameof(Get), new { id = GetEntityKey(entity) }, entity);
+
+            // Получаем ключ только после сохранения
+            var keyProperty = typeof(TEntity).GetProperty("Id");
+            var entityId = keyProperty?.GetValue(entity);
+
+            return CreatedAtAction(nameof(Get), new { id = entityId }, entity);
         }
 
         [HttpPut("{id}")]
@@ -62,7 +68,6 @@ namespace WebApi.Controllers
 
         private int GetEntityKey(TEntity entity)
         {
-            // Предположим, что ключ всегда "Id". Измените метод, если у вас другая структура.
             var keyProperty = typeof(TEntity).GetProperty("Id");
             return (int)(keyProperty?.GetValue(entity) ?? throw new Exception("Key 'Id' not found"));
         }

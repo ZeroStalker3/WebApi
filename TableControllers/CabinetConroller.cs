@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using WebApi.Controllers;
+using Microsoft.EntityFrameworkCore;
 using WebApi.Models;
 
 namespace WebApi.TableControllers

@@ -4,3 +4,37 @@ GET {{WebApi_HostAddress}}/weatherforecast/
 Accept: application/json
 
 ###
+
+GET {{WebApi_HostAddress}}/api/Employee
+
+###
+
+POST {{WebApi_HostAddress}}/api/data
+Content-Type: application/json
+
+{
+  //Model
+}
+
+###
+
+POST {{WebApi_HostAddress}}/api/Employee/Employee
+Content-Type: application/json
+
+{
+    "firtsName": "Белоусов",
+    "name": "Семен",
+    "lastName": "Агафонович",
+    "numberPhone": "+7 (179) 370-26-88",
+    "email": "белоусов@гкдр.ру",
+    "birthday": "25.04.1971",
+    "idDepartament": 1,
+    "idPost": 1,
+    "idCabinet": 2
+}
+
+###
+
+GET {{WebApi_HostAddress}}/api/Employee/1
+
+###
