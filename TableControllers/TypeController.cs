@@ -7,7 +7,7 @@ namespace WebApi.TableControllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class TypeController : GenericController<Models.Type>
+    public class TypeController : GenericController<Models.Types>
     {
         public TypeController(Yp3Context context) : base(context) { }   
     }

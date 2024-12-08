@@ -25,6 +25,8 @@ public partial class Employee
 
     public int? IdCabinet { get; set; }
 
+    public virtual ICollection<EventEmployee> EventEmployees { get; set; } = new List<EventEmployee>();
+
     public virtual ICollection<Event> Events { get; set; } = new List<Event>();
 
     public virtual Cabinet? IdCabinetNavigation { get; set; }

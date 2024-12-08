@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace WebApi.Models;
 
-public partial class Type
+public partial class Types
 {
     public int Id { get; set; }
 

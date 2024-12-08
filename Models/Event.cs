@@ -15,7 +15,7 @@ public partial class Event
 
     public DateOnly Dataevent { get; set; }
 
-    public int IdEmployee { get; set; }
+    public int? IdEmployee { get; set; } = null!;
 
     public string Description { get; set; } = null!;
 
@@ -23,5 +23,5 @@ public partial class Event
 
     public virtual Status IdStatusNavigation { get; set; } = null!;
 
-    public virtual Type IdTypeNavigation { get; set; } = null!;
+    public virtual Types IdTypeNavigation { get; set; } = null!;
 }

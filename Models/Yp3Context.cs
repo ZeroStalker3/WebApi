@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Reflection;
 using Microsoft.EntityFrameworkCore;
 
 namespace WebApi.Models;
@@ -29,6 +30,8 @@ public partial class Yp3Context : DbContext
 
     public virtual DbSet<Event> Events { get; set; }
 
+    public virtual DbSet<EventEmployee> EventEmployees { get; set; }
+
     public virtual DbSet<Material> Materials { get; set; }
 
     public virtual DbSet<Organization> Organizations { get; set; }
@@ -37,7 +40,11 @@ public partial class Yp3Context : DbContext
 
     public virtual DbSet<Status> Statuses { get; set; }
 
-    public virtual DbSet<Type> Types { get; set; }
+    public virtual DbSet<Types> Types { get; set; }
+
+    public virtual DbSet<TypeLack> TypeLacks { get; set; }
+
+    public virtual DbSet<WorkingCalendar> WorkingCalendars { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         => optionsBuilder.UseSqlServer("Data Source=ZEROYZ; Initial Catalog=YP3; TrustServerCertificate = true; Integrated Security = true;");
@@ -95,6 +102,7 @@ public partial class Yp3Context : DbContext
         {
             entity.ToTable("Employee");
 
+            entity.Property(e => e.Id).HasMaxLength(50);
             entity.Property(e => e.IdCabinet).HasColumnName("Id_Cabinet");
             entity.Property(e => e.IdDepartament).HasColumnName("Id_Departament");
             entity.Property(e => e.IdPost).HasColumnName("Id_Post");
@@ -116,7 +124,9 @@ public partial class Yp3Context : DbContext
         {
             entity.ToTable("Event");
 
-            entity.Property(e => e.IdEmployee).HasColumnName("Id_Employee");
+            entity.Property(e => e.IdEmployee)
+                .HasMaxLength(50)
+                .HasColumnName("Id_Employee");
             entity.Property(e => e.IdStatus).HasColumnName("Id_Status");
             entity.Property(e => e.IdType).HasColumnName("Id_Type");
             entity.Property(e => e.Name).HasMaxLength(50);
@@ -137,12 +147,29 @@ public partial class Yp3Context : DbContext
                 .HasConstraintName("FK_Event_Type");
         });
 
+        modelBuilder.Entity<EventEmployee>(entity =>
+        {
+            entity.ToTable("EventEmployee");
+
+            entity.Property(e => e.IdEmployee).HasMaxLength(50);
+
+            entity.HasOne(d => d.IdEmployeeNavigation).WithMany(p => p.EventEmployees)
+                .HasForeignKey(d => d.IdEmployee)
+                .HasConstraintName("FK_EventEmployee_Employee");
+
+            entity.HasOne(d => d.IdTypeLackNavigation).WithMany(p => p.EventEmployees)
+                .HasForeignKey(d => d.IdTypeLack)
+                .HasConstraintName("FK_EventEmployee_TypeLack");
+        });
+
         modelBuilder.Entity<Material>(entity =>
         {
             entity.ToTable("Material");
 
             entity.Property(e => e.Area).HasMaxLength(50);
-            entity.Property(e => e.IdEmployee).HasColumnName("Id_Employee");
+            entity.Property(e => e.IdEmployee)
+                .HasMaxLength(50)
+                .HasColumnName("Id_Employee");
             entity.Property(e => e.IdStatus).HasColumnName("Id_Status");
             entity.Property(e => e.Name).HasMaxLength(50);
             entity.Property(e => e.Type).HasMaxLength(50);
@@ -177,11 +204,31 @@ public partial class Yp3Context : DbContext
             entity.Property(e => e.Name).HasMaxLength(50);
         });
 
-        modelBuilder.Entity<Type>(entity =>
+        modelBuilder.Entity<Types>(entity =>
         {
-            entity.ToTable("Type");
+            entity.ToTable("Types");
 
             entity.Property(e => e.Name).HasMaxLength(50);
+        });
+
+        modelBuilder.Entity<TypeLack>(entity =>
+        {
+            entity.ToTable("TypeLack");
+
+            entity.Property(e => e.Name).HasMaxLength(50);
+        });
+
+        modelBuilder.Entity<WorkingCalendar>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("WorkingCalendar_pk");
+
+            entity.ToTable("WorkingCalendar");
+
+            entity.Property(e => e.Id)
+                .ValueGeneratedNever()
+                .HasComment("Идентификатор строки");
+            entity.Property(e => e.ExceptionDate).HasComment("День-исключение");
+            entity.Property(e => e.IsWorkingDay).HasComment("0 - будний день, но законодательно принят выходным");
         });
 
         OnModelCreatingPartial(modelBuilder);

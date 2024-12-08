@@ -13,13 +13,13 @@ public partial class Material
 
     public DateOnly DateChange { get; set; }
 
-    public int IdStatus { get; set; }
+    public int? IdStatus { get; set; }
 
     public string Type { get; set; } = null!;
 
     public string Area { get; set; } = null!;
 
-    public int IdEmployee { get; set; }
+    public int IdEmployee { get; set; } 
 
     public virtual Employee IdEmployeeNavigation { get; set; } = null!;
 
