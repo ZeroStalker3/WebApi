@@ -10,7 +10,7 @@ namespace WebApi.Controllers
     {
         private readonly DbContext _context;
         private readonly DbSet<TEntity> _dbSet;
-
+ 
         public GenericController(DbContext context)
         {
             _context = context;

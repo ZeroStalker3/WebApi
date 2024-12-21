@@ -17,7 +17,7 @@ public partial class Yp3Context : DbContext
     }
 
     public virtual DbSet<Cabinet> Cabinets { get; set; }
-
+        
     public virtual DbSet<Calendar> Calendars { get; set; }
 
     public virtual DbSet<Departament> Departaments { get; set; }

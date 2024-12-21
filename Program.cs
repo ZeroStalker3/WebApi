@@ -33,7 +33,6 @@ namespace WebApi
 
             app.UseAuthorization();
 
-
             app.MapControllers();
 
             app.Run();
